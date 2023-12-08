@@ -13,25 +13,29 @@ class CocktailsViewModel: BaseViewModel {
     private var cocktail: Cocktail = Cocktail()
     private var cocktailImage: UIImage? = nil
     
-    
-    func setCocktailWith(id: String, completion: @escaping (Bool) -> Void) {
-        APIClient.requestForSingleCockTail(apiRequest: APIRequest<JSONObjectModelForCoctails>(
-            routing: .getCocktail(id: id),
-            decoder: JSONDecoder(),
-            whileLoading: whileLoading, whenLoaded: { (cocktail) in
-                self.cocktail = Cocktail(cocktailFromJson: cocktail.drinks[0].getCocktailInfo() ,ingredients:  cocktail.drinks[0].getIngredients())
+    func setCocktailWith(id: String) async -> Bool {
+        whileLoading()
+        do {
+            let route = CocktailsApiRoutes.getCocktail(id: id)
+            let response: JSONObjectModelForCocktails? = try await APIClient.service.fetchObject(route: route)
+            if let response, let drink = response.drinks.first {
+                self.cocktail = .init(cocktailFromJson: drink.getCocktailInfo(), ingredients: drink.getIngredients())
                 self.downloadImage(stringURL: self.cocktail.imgUrl)
-                completion(true)
-        }, onError:   { message in
-            print(message)
-        }))
+                return true
+            } else {
+                return false
+            }
+        } catch {
+            print(error.localizedDescription)
+            return false
+        }
     }
     
     func getCocktailName() -> String {
         return self.cocktail.name
     }
     
-    func getCoctailImage() -> UIImage {
+    func getCocktailImage() -> UIImage {
         if self.cocktailImage == nil {
           return UIImage()
         }

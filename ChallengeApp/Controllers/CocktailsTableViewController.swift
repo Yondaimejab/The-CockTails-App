@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Anchorage
 
 class CocktailsTableViewController: UITableViewController {
     
@@ -15,12 +16,32 @@ class CocktailsTableViewController: UITableViewController {
     var cocktailsImages: [Int:UIImage]!
     let tableViewCellIdentifier = "coctailsTableViewCellIdentifier"
     
+    private var titleLabel = UILabel()
+    private var titleView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let nib = UINib(nibName: "CocktailsPreviewTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: tableViewCellIdentifier)
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
+        buildUI()
+        displayDefaultUI()
     }
 
+    private func buildUI() {
+        titleView.addSubview(titleLabel)
+        titleLabel.centerAnchors == titleView.centerAnchors
+        titleLabel.heightAnchor <= titleView.heightAnchor
+    }
+    
+    private func displayDefaultUI() {
+        titleLabel.text = navigationItem.title
+        titleLabel.textColor = ColorPalette.label
+        titleLabel.font = UIFont(name: "Jost-Medium", size: 32)
+        navigationItem.titleView = titleView
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -35,38 +56,23 @@ class CocktailsTableViewController: UITableViewController {
         performSegue(withIdentifier: "toCocktailDetailsController", sender: self)
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath) as! CocktailsPreviewTableViewCell
         let cocktail = cocktails[indexPath.row]
-        let coctailImage: UIImage = {
-            if let image = cocktailsImages[Int(cocktail.idDrink)!] {
-                return image
-            }else {
-                return UIImage()
-            }
+        let cocktailImage: UIImage = {
+            guard let image = cocktailsImages[Int(cocktail.idDrink)!] else { return UIImage() }
+            return image
         }()
-        cell.setupCellWith(
-            name: cocktail.strDrink,
-            image: coctailImage)
-        
+        cell.setupCellWith(name: cocktail.strDrink, image: cocktailImage )
         return cell
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? CocktailDetailsViewController {
             destination.cocktailID = self.cocktails[self.tableView.indexPathForSelectedRow!.row].idDrink
-            destination.navigationController?.title  = self.cocktails[self.tableView.indexPathForSelectedRow!.row].strDrink
+            let title = cocktails[self.tableView.indexPathForSelectedRow!.row].strDrink.capitalized
+            destination.navigationController?.title = title
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

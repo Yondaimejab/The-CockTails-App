@@ -23,7 +23,7 @@ class Cocktail  {
         ingredients = [Ingredient]()
     }
     
-    init(cocktailFromJson: CocktailPreviewforSingleCocktail, ingredients: [Ingredient]){
+    init(cocktailFromJson: CocktailPreviewForSingleCocktail, ingredients: [Ingredient]){
         name = cocktailFromJson.strDrink
         imgUrl = cocktailFromJson.strDrinkThumb
         cocktailId = Int(cocktailFromJson.idDrink)!

@@ -142,8 +142,8 @@ class JSONModelForCocktail: Decodable {
         return ingredients
     }
     
-    func getCocktailInfo() -> CocktailPreviewforSingleCocktail {
-        let cocktailInfo = CocktailPreviewforSingleCocktail(strDrink: strDrink, strDrinkThumb: strDrinkThumb, idDrink: idDrink, strInstructions: strInstructions)
+    func getCocktailInfo() -> CocktailPreviewForSingleCocktail {
+        let cocktailInfo = CocktailPreviewForSingleCocktail(strDrink: strDrink, strDrinkThumb: strDrinkThumb, idDrink: idDrink, strInstructions: strInstructions)
         return cocktailInfo
     }
 }

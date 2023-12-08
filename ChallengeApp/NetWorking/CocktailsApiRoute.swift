@@ -51,8 +51,8 @@ enum CocktailsApiRoutes: URLRequestConvertible {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         // With this you can set headers if needed
-        //request.setValue("1d830c27-c576-42c0-862c-412dfbc2e6b4", forHTTPHeaderField: "x-ibm-client-id")
-        request = try URLEncoding.methodDependent.encode(request, with: parameters)
+        // Request.setValue("1d830c27-c576-42c0-862c-412dfbc2e6b4", forHTTPHeaderField: "x-ibm-client-id")
+        request = try URLEncoding(destination: .methodDependent).encode(request, with: parameters)
         return request
     }
 }

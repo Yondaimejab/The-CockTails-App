@@ -90,5 +90,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Jost-Black.ttf</string>
+		<string>Jost-Regular.ttf</string>
+		<string>Jost-MediumItalic.ttf</string>
+		<string>Jost-Medium.ttf</string>
+		<string>Jost-SemiBold.ttf</string>
+	</array>
 </dict>
 </plist>
